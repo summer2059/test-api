@@ -24,16 +24,18 @@ class TicketResource extends JsonResource
                 'status' => $this->status,
             ],
            
-            'author' => [
-                'data' => [
-                    'type' => 'user',
-                    'id' => $this->user_id,
+            'relationships' => [
+                'author' => [
+                    'data' => [
+                        'type' => 'user',
+                        'id' => $this->user_id,
+                    ],
+                    'links' => [
+                        'self' => 'todo',
+                    ]
                 ],
-                'links' => [
-                    'self' => 'todo',
-                ]
             ],
-            
+
              'links' => [
                 'self' => url('/api/v1/tickets/' . $this->id),
             ],
