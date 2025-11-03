@@ -23,8 +23,17 @@ class AuthController extends Controller
         $user = User::firstWhere('email', $request->email);
         return $this->ok(
             'Authenticated',[
-                'token' => $user->createToken('API Token of ' . $user->name)->plainTextToken
+                'token' => $user->createToken(
+                    'API Token of ' . $user->name, 
+                    ['*'],
+                    now()->addMonth())->plainTextToken
             ]
         );
+    }
+    public function logout(Request $request) {
+        // $request->user()->tokens()->delete();
+        $request->user()->currentAccessToken()->delete();
+
+        return $this->ok('');
     }
 }
