@@ -22,30 +22,29 @@ class StoreTicketRequest extends BestTicketRequest
      */
     public function rules(): array
     {
+        $authorIdAttribute = $this->routeIs('tickets.store') ? 'data.relationships.author.data.id' : 'author';
         $rules = [
             'data.attributes.title' => 'required|string',
             'data.attributes.description' => 'required|string',
             'data.attributes.status' => 'required|string|in:A,C,H,R',
-            'data.relationships.author.data.id' => 'required|integer|exists:users,id',
+            $authorIdAttribute => 'required|integer|exists:users,id',
         ];
         
         $user = $this->user();
 
-        if ($this->routeIs('tickets.store')) {
+        
             if ($this->user()->tokenCan(Abilities::CreateOwnTicket)) {
-                $rules['data.relationships.author.data.id'] = '|size:' . $user->id;
+                $rules[$authorIdAttribute] = '|size:' . $user->id;
             }
-        }
 
         return $rules;
     }
-    public function messages()
+    protected function prepareForValidation(): void
     {
-        return [
-            'data.attributes.title.required' => 'The title field is required.',
-            'data.attributes.description.required' => 'The description field is required.',
-            'data.attributes.status.required' => 'The status field is required.',
-            'data.relationships.author.data.id.required' => 'The author id field is required.',
-        ];
+        if ($this->routeIs('authors.tickets.store')) {
+            $this->merge([
+                'author' => $this->route('author'),
+            ]);
+        }
     }
 }
