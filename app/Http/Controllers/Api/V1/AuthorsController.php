@@ -7,7 +7,7 @@ use App\Http\Requests\Api\V1\StoreUserRequest;
 use App\Http\Requests\Api\V1\UpdateUserRequest;
 use App\Http\Resources\V1\UserResource;
 
-class UserController extends APiController
+class AuthorsController extends APiController
 {
     /**
      * Display a listing of the resource.
@@ -40,13 +40,13 @@ class UserController extends APiController
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show(User $author)
     {
         if ($this->include('tickets')){
 
-            return new UserResource($user->load('tickets'));
+            return new UserResource($author->load('tickets'));
         }
-        return new UserResource($user);
+        return new UserResource($author);
     }
 
     /**
