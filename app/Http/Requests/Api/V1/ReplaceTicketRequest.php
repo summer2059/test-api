@@ -4,7 +4,7 @@ namespace App\Http\Requests\Api\V1;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ReplaceTicketRequest extends FormRequest
+class ReplaceTicketRequest extends BestTicketRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -31,14 +31,5 @@ class ReplaceTicketRequest extends FormRequest
 
 
         return $rules;
-    }
-    public function messages()
-    {
-        return [
-            'data.attributes.title.required' => 'The title field is required.',
-            'data.attributes.description.required' => 'The description field is required.',
-            'data.attributes.status.required' => 'The status field is required.',
-            'data.relationships.author.data.id.required' => 'The author id field is required.',
-        ];
     }
 }
