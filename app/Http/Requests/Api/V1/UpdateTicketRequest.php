@@ -26,7 +26,7 @@ class UpdateTicketRequest extends BestTicketRequest
             'data.attributes.title' => 'sometimes|string',
             'data.attributes.description' => 'sometimes|string',
             'data.attributes.status' => 'sometimes|string|in:A,C,H,R',
-            'data.relationships.author.data.id' => 'sometimes|integer',
+            'data.relationships.author.data.id' => 'prohibited',
         ];
 
 

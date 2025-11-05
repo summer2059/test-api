@@ -23,18 +23,17 @@ class StoreTicketRequest extends BestTicketRequest
     public function rules(): array
     {
         $authorIdAttribute = $this->routeIs('tickets.store') ? 'data.relationships.author.data.id' : 'author';
+        $user = $this->user();
+        $authoreRule = 'required|integer|exists:users,id';
         $rules = [
             'data.attributes.title' => 'required|string',
             'data.attributes.description' => 'required|string',
             'data.attributes.status' => 'required|string|in:A,C,H,R',
-            $authorIdAttribute => 'required|integer|exists:users,id',
+            $authorIdAttribute => $authoreRule . '|size:' . $user->id,
         ];
         
-        $user = $this->user();
-
-        
             if ($this->user()->tokenCan(Abilities::CreateOwnTicket)) {
-                $rules[$authorIdAttribute] = '|size:' . $user->id;
+                $rules[$authorIdAttribute] = $authoreRule;
             }
 
         return $rules;
