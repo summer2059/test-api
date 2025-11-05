@@ -6,7 +6,7 @@ trait ApiResponses{
     protected function ok($message, $data = []) {
         return $this->success($message, $data, 200);
     }
-    public function success($message, $data = [], $StatusCode = 200) {
+    protected function success($message, $data = [], $StatusCode = 200) {
         return response()->json([
             'data' => $data,
             'message' => $message,
@@ -14,10 +14,23 @@ trait ApiResponses{
         ], $StatusCode);
     } 
 
-    public function error($message, $StatusCode) {
+    protected function error($errors = [], $StatusCode = null) {
+        if (is_string($errors)) {
+            return response()->json([
+                'message' => $errors,
+                'status' => $StatusCode
+            ], $StatusCode);
+        }
         return response()->json([
-            'message' => $message,
-            'status' => $StatusCode
-        ], $StatusCode);
+            'errors' => $errors,
+        ]);
     } 
+    protected function notAuthorized($message) {
+        return $this->error([
+            'status' => 401,
+            'message' => $message,
+            'source' => '',
+        ]
+        );
+    }
 }
